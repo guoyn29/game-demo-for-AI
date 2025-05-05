@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class test_emotion : MonoBehaviour
 {
-    public Button testEmotionButton; 
+    public Button testEmotionButton;
     public WebcamDisplay webcamDisplay;
     // Start is called before the first frame update
     void Start()
