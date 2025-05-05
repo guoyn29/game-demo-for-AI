@@ -31,6 +31,8 @@ public class WebcamDisplay : MonoBehaviour
     private WebCamTexture webCamTexture;
     private Worker worker;
 
+    private string lastDetectedEmotion = "Unknown";
+
     // 初始化和按钮点击事件
     void Start()
     {
@@ -58,6 +60,12 @@ public class WebcamDisplay : MonoBehaviour
             // 等待15秒后再执行下一次推理
             yield return new WaitForSeconds(15f);
         }
+    }
+
+    // --- 提供给外部访问的公有方法 ---
+    public string GetLastDetectedEmotion()
+    {
+        return lastDetectedEmotion;
     }
 
     IEnumerator RunInference()
@@ -98,6 +106,8 @@ public class WebcamDisplay : MonoBehaviour
         //resultText.text = resultStr;
          if (recognizeButton != null)
             recognizeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Emotion: {emotionLabels[maxIndex]}";
+
+        lastDetectedEmotion = emotionLabels[maxIndex];
 
         // 清理资源
         inputTensor.Dispose();
