@@ -80,7 +80,7 @@ public class WebcamDisplay : MonoBehaviour
         Debug.Log("Output Tensor Shape: " + shape.ToString());
         Unity.Collections.NativeArray<float>.ReadOnly outputArray = output.AsReadOnlyNativeArray();  // 将 Tensor 转换为数组
         float maxProbability = -1f;
-        int maxIndex = -1; 
+        int maxIndex = -1;
         // 处理输出，输出每个情绪的概率
         // 输出每个情绪类别的概率
         for (int i = 0; i < output.shape[1]; i++)
@@ -96,8 +96,18 @@ public class WebcamDisplay : MonoBehaviour
 
         // 显示预测的情绪
         //resultText.text = resultStr;
-         if (recognizeButton != null)
+        if (recognizeButton != null)
             recognizeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Emotion: {emotionLabels[maxIndex]}";
+
+        // 在RunInference方法中找到情绪结果后添加：
+        if (maxIndex >= 0 && maxIndex < emotionLabels.Length)
+        {
+            string detectedEmotion = emotionLabels[maxIndex];
+            resultText.text = $"Emotion: {detectedEmotion}";
+
+            // 触发情绪检测事件
+            EmotionEventSystem.Instance.OnEmotionDetected.Invoke(detectedEmotion);
+        }
 
         // 清理资源
         inputTensor.Dispose();
