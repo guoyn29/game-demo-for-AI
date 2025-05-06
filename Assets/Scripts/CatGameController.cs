@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using UnityEngine.InputSystem;
+using System.Text;
+using UnityEngine.SceneManagement;
 
 public class CatGameController : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class CatGameController : MonoBehaviour
     public GameObject guidancePanel;
     public TextMeshProUGUI guidanceText;
 
+    private bool isInSubMenu = false; // 标记是否在子菜单中
+
     [Header("Game Elements")]
     public Light homeIndicator; // 家的方向指示光点
 
@@ -24,6 +28,7 @@ public class CatGameController : MonoBehaviour
     public float typingSpeed = 0.05f;
     [TextArea(3, 10)]
     public string fullStoryText = "When you woke up, you were a lost cat, placed in a waste cardboard box on the streets of Tokyo. Your head hurts very much. You have forgotten the way home, but you seem to have an impression of the direction of home. The streets at night are very dangerous for a weak and lovely kitten. Please avoid these dangers and find your way home. It seems that there are lights flickering in the distance, at familiar frequencies...";
+
 
     void Start()
     {
@@ -49,15 +54,17 @@ public class CatGameController : MonoBehaviour
         guidanceButton.GetComponent<Button>().onClick.AddListener(ShowGuidance);
         startGameButton.GetComponent<Button>().onClick.AddListener(StartGame);
 
+        
+
         // 设置操作指南文本内容
         guidanceText.text = @"=== CONTROLS ===
 
 Movement:
 - Mouse move: Look around
 - Left mouse click: Move to clicked position
-- Left/Right arrow keys: Strafe movement
-- PageUp key: Jump
-- PageDown key: Crouch/Stand toggle
+- A/W/S/D arrow keys: Strafe movement
+- Space key: Jump
+- E key: Interaction with game characters
 
 Game Tips:
 - The blue light in the distance indicates home direction
@@ -76,6 +83,7 @@ Game Tips:
 
         // 显示故事面板
         storyPanel.SetActive(true);
+        isInSubMenu = true;
         StartCoroutine(TypeStoryText());
     }
 
@@ -83,10 +91,12 @@ Game Tips:
     IEnumerator TypeStoryText()
     {
         storyText.text = "";
-
+        var sb = new StringBuilder();
+        
         for (int i = 0; i < fullStoryText.Length; i++)
         {
-            storyText.text += fullStoryText[i];
+            sb.Append(fullStoryText[i]);
+            storyText.text = sb.ToString();
             yield return new WaitForSeconds(typingSpeed);
         }
     }
@@ -103,6 +113,8 @@ Game Tips:
         storyButton.SetActive(true);
         guidanceButton.SetActive(true);
         startGameButton.SetActive(true);
+
+        isInSubMenu = false;
     }
 
     // 显示操作指南
@@ -116,6 +128,7 @@ Game Tips:
 
         // 显示操作指南面板
         guidancePanel.SetActive(true);
+        isInSubMenu = true;
     }
 
     // 开始游戏
@@ -135,6 +148,13 @@ Game Tips:
 
         // 这里可以添加游戏正式开始的逻辑
         Debug.Log("Game Started!");
+
+                // 隐藏UI
+        storyButton.SetActive(false);
+        guidanceButton.SetActive(false);
+        startGameButton.SetActive(false);
+
+        SceneManager.LoadScene("ai_tokyo");
     }
 
     // 家的光点闪烁效果
@@ -146,6 +166,15 @@ Game Tips:
             float intensity = Mathf.Sin(Time.time * 2f) * 0.5f + 0.8f;
             homeIndicator.intensity = intensity;
             yield return null;
+        }
+    }
+
+    void Update()
+    {
+        // 如果在子菜单中且检测到鼠标点击
+        if (isInSubMenu && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)))
+        {
+            ReturnToMainMenu();
         }
     }
 }
