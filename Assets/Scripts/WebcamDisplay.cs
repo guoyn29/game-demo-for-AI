@@ -108,6 +108,15 @@ public class WebcamDisplay : MonoBehaviour
             recognizeButton.GetComponentInChildren<TextMeshProUGUI>().text = $"Emotion: {emotionLabels[maxIndex]}";
 
         lastDetectedEmotion = emotionLabels[maxIndex];
+        // 在RunInference方法中找到情绪结果后添加：
+        if (maxIndex >= 0 && maxIndex < emotionLabels.Length)
+        {
+            string detectedEmotion = emotionLabels[maxIndex];
+            resultText.text = $"Emotion: {detectedEmotion}";
+
+            // 触发情绪检测事件
+            EmotionEventSystem.Instance.OnEmotionDetected.Invoke(detectedEmotion);
+        }
 
         // 清理资源
         inputTensor.Dispose();
