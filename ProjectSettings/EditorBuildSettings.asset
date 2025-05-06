@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/start_menu.unity
+    guid: 4f4ee574d56a040459b1102db371a0ce
+  - enabled: 1
     path: Assets/Scenes/ai_tokyo.unity
     guid: 54f63867d939fd240a32e0125abb7e1d
   m_configObjects:
