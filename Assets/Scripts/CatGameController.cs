@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class CatGameController : MonoBehaviour
 {
     [Header("UI Elements")]
-    public GameObject titleText;
+    //public GameObject titleText;
     public GameObject storyButton;
     public GameObject guidanceButton;
     public GameObject startGameButton;
@@ -34,7 +34,7 @@ public class CatGameController : MonoBehaviour
         Cursor.lockState = 0;
 
         // 显示主菜单元素
-        titleText.SetActive(true);
+        //titleText.SetActive(true);
         storyButton.SetActive(true);
         guidanceButton.SetActive(true);
         startGameButton.SetActive(true);
@@ -69,7 +69,7 @@ Game Tips:
     public void ShowStory()
     {
         // 隐藏主菜单按钮
-        titleText.SetActive(false);
+        //titleText.SetActive(false);
         storyButton.SetActive(false);
         guidanceButton.SetActive(false);
         startGameButton.SetActive(false);
@@ -99,7 +99,7 @@ Game Tips:
         guidancePanel.SetActive(false);
 
         // 显示主菜单元素
-        titleText.SetActive(true);
+        //titleText.SetActive(true);
         storyButton.SetActive(true);
         guidanceButton.SetActive(true);
         startGameButton.SetActive(true);
@@ -109,7 +109,7 @@ Game Tips:
     public void ShowGuidance()
     {
         // 隐藏主菜单按钮
-        titleText.SetActive(false);
+        //titleText.SetActive(false);
         storyButton.SetActive(false);
         guidanceButton.SetActive(false);
         startGameButton.SetActive(false);
@@ -122,7 +122,7 @@ Game Tips:
     public void StartGame()
     {
         // 隐藏所有UI元素
-        titleText.SetActive(false);
+        //titleText.SetActive(false);
         storyButton.SetActive(false);
         guidanceButton.SetActive(false);
         startGameButton.SetActive(false);
