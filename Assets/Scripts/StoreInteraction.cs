@@ -12,7 +12,7 @@ public class ClerkInteraction : MonoBehaviour
 
     [Header("��������")]
     public CatHealth playerHealth; // ������Ҷ���
-    public float healthAdd = 20f;  // ÿ�����ӵ�����ֵ
+    public float healthAdd = 30f;  // ÿ�����ӵ�����ֵ
 
     [Header("�ӽ�����")]
     public float rotateSpeed = 4f;        // ��תƽ���ٶ�

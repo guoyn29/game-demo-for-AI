@@ -26,7 +26,7 @@ public class CrowController : MonoBehaviour
 
     [Header("食物投放")]
     public CatHealth playerHealth; // ������Ҷ���
-    public float healthAdd = 8f;  // ÿ�����ӵ�����ֵ
+    public float healthAdd = 18f;  // ÿ�����ӵ�����ֵ
 
     private Transform player; 
 
@@ -60,7 +60,7 @@ public class CrowController : MonoBehaviour
         }
 
         // 模拟调试键（可删除）
-        if (Input.GetKeyDown(KeyCode.E))
+        if (playerNearby && Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("模拟微笑触发");
             UpdateHint(rewardMessage);
@@ -96,13 +96,13 @@ public class CrowController : MonoBehaviour
     {
         if (emotion == "Happy")
         {
-            healthAdd = 18f;
+            healthAdd = 28f;
             AddHealth();
             OnSmileDetected();
         }
         else
         {
-            healthAdd = 8f;
+            healthAdd = 18f;
             AddHealth();
             OnSmileDetected();
         }

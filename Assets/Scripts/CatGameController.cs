@@ -13,6 +13,7 @@ public class CatGameController : MonoBehaviour
     public GameObject storyButton;
     public GameObject guidanceButton;
     public GameObject startGameButton;
+    public GameObject quitGameButton;
 
     public GameObject storyPanel;
     public TextMeshProUGUI storyText;
@@ -53,7 +54,7 @@ public class CatGameController : MonoBehaviour
         storyButton.GetComponent<Button>().onClick.AddListener(ShowStory);
         guidanceButton.GetComponent<Button>().onClick.AddListener(ShowGuidance);
         startGameButton.GetComponent<Button>().onClick.AddListener(StartGame);
-
+        quitGameButton.GetComponent<Button>().onClick.AddListener(QuitGame);
         
 
         // 设置操作指南文本内容
@@ -141,6 +142,7 @@ Game Tips:
         startGameButton.SetActive(false);
         storyPanel.SetActive(false);
         guidancePanel.SetActive(false);
+        quitGameButton.SetActive(false);
 
         // 激活家的指示光点并开始闪烁
         homeIndicator.gameObject.SetActive(true);
@@ -153,6 +155,9 @@ Game Tips:
         storyButton.SetActive(false);
         guidanceButton.SetActive(false);
         startGameButton.SetActive(false);
+        quitGameButton.SetActive(false);
+
+        Time.timeScale = 1f;
 
         SceneManager.LoadScene("ai_tokyo");
     }
@@ -176,5 +181,14 @@ Game Tips:
         {
             ReturnToMainMenu();
         }
+    }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
     }
 }

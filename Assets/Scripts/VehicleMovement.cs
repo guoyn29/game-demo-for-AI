@@ -2,98 +2,99 @@ using UnityEngine;
 
 public class VehicleMovement : MonoBehaviour
 {
-    // --- ÓÉ Spawner ÉèÖÃ ---
-    public Vector3 moveDirection;      // ÒÆ¶¯·½Ïò
-    public float minSpeed = 5f;        // ×îĞ¡ËÙ¶È
-    public float maxSpeed = 15f;       // ×î´óÆÚÍûËÙ¶È (Ã¿Á¾³µ¿ÉÒÔ²»Í¬)
-    public float acceleration = 3f;    // ¼ÓËÙ¶È
-    public float deceleration = 6f;    // ¼õËÙ¶È (Í¨³£±È¼ÓËÙ¶È´ó£¬ÒÔ±ã¸ü¿ìÉ²³µ)
-    public float detectionDistance = 20f; // ÏòÇ°¼ì²âµÄ×î´ó¾àÀë
-    public float safeDistance = 10f;   // ÓëÇ°³µ±£³ÖµÄ°²È«¾àÀë
-    public LayerMask vehicleLayerMask; // Ö»¼ì²â³µÁ¾²ã
-    public float sensorHeightOffset = 0.5f; // ´«¸ĞÆ÷£¨ÉäÏßÆğµã£©µÄ¸ß¶ÈÆ«ÒÆ
-    public float sensorForwardOffset = 1.5f; // ´«¸ĞÆ÷£¨ÉäÏßÆğµã£©µÄÇ°ÏòÆ«ÒÆ (»ùÓÚ³µÁ¾×ÔÉíÇ°·½)
-    public float sensorRadius = 0.8f;    // ¼ì²â·¶Î§µÄ°ë¾¶ (Ê¹ÓÃSphereCast)
-    public float destroyXCoordinate;   // Ïú»Ù±ß½ç
+    // --- ï¿½ï¿½ Spawner ï¿½ï¿½ï¿½ï¿½ ---
+    public Vector3 moveDirection;      // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float minSpeed = 5f;        // ï¿½ï¿½Ğ¡ï¿½Ù¶ï¿½
+    public float maxSpeed = 15f;       // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ (Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½Í¬)
+    public float acceleration = 3f;    // ï¿½ï¿½ï¿½Ù¶ï¿½
+    public float deceleration = 6f;    // ï¿½ï¿½ï¿½Ù¶ï¿½ (Í¨ï¿½ï¿½ï¿½È¼ï¿½ï¿½Ù¶È´ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½É²ï¿½ï¿½)
+    public float detectionDistance = 20f; // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float safeDistance = 10f;   // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÄ°ï¿½È«ï¿½ï¿½ï¿½ï¿½
+    public LayerMask vehicleLayerMask; // Ö»ï¿½ï¿½â³µï¿½ï¿½ï¿½ï¿½
+    public float sensorHeightOffset = 0.5f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£©ï¿½Ä¸ß¶ï¿½Æ«ï¿½ï¿½
+    public float sensorForwardOffset = 1.5f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã£©ï¿½ï¿½Ç°ï¿½ï¿½Æ«ï¿½ï¿½ (ï¿½ï¿½ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½)
+    public float sensorRadius = 0.8f;    // ï¿½ï¿½â·¶Î§ï¿½Ä°ë¾¶ (Ê¹ï¿½ï¿½SphereCast)
+    public float destroyXCoordinate;   // ï¿½ï¿½ï¿½Ù±ß½ï¿½
 
-    // --- ÄÚ²¿×´Ì¬ ---
-    private float currentSpeed;       // µ±Ç°Êµ¼ÊËÙ¶È
-    private bool movingRight;         // ÒÆ¶¯·½Ïò±ê¼Ç
+    // --- ï¿½Ú²ï¿½×´Ì¬ ---
+    private float currentSpeed;       // ï¿½ï¿½Ç°Êµï¿½ï¿½ï¿½Ù¶ï¿½
+    private bool movingRight;         // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+
 
     void Start()
     {
-        // ³õÊ¼ËÙ¶È¿ÉÒÔÉèÎª×îĞ¡ËÙ¶È»ò0
+        // ï¿½ï¿½Ê¼ï¿½Ù¶È¿ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ğ¡ï¿½Ù¶È»ï¿½0
         currentSpeed = minSpeed;
         movingRight = moveDirection.x > 0;
 
-        // È·±£°²È«¾àÀëĞ¡ÓÚ¼ì²â¾àÀë
+        // È·ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½
         safeDistance = Mathf.Min(safeDistance, detectionDistance);
     }
 
     void Update()
     {
-        // 1. ¸ĞÖªÇ°·½
-        float targetSpeed = maxSpeed; // Ä¬ÈÏÄ¿±êÊÇ×î´óËÙ¶È
+        // 1. ï¿½ï¿½ÖªÇ°ï¿½ï¿½
+        float targetSpeed = maxSpeed; // Ä¬ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
         bool obstacleDetected = false;
         float distanceToObstacle = detectionDistance;
 
-        // ¼ÆËã´«¸ĞÆ÷ÆğµãÎ»ÖÃ (ÉÔÎ¢Ì§¸ß²¢ÔÚ³µÍ·Ç°·½Ò»µã)
-        // Ê¹ÓÃ transform.TransformPoint ½«±¾µØÆ«ÒÆ×ª»»ÎªÊÀ½ç×ø±ê
+        // ï¿½ï¿½ï¿½ã´«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ (ï¿½ï¿½Î¢Ì§ï¿½ß²ï¿½ï¿½Ú³ï¿½Í·Ç°ï¿½ï¿½Ò»ï¿½ï¿½)
+        // Ê¹ï¿½ï¿½ transform.TransformPoint ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         // Vector3 sensorStartPos = transform.TransformPoint(new Vector3(0, sensorHeightOffset, sensorForwardOffset));
-        // »òÕß£¬Èç¹ûÎïÌåÃ»ÓĞ¸´ÔÓĞı×ª£¬¿ÉÒÔÖ±½ÓÓÃÊÀ½ç×ø±êÆ«ÒÆ£º
+        // ï¿½ï¿½ï¿½ß£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ğ¸ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æ£ï¿½
         Vector3 sensorStartPos = transform.position + Vector3.up * sensorHeightOffset + moveDirection * sensorForwardOffset;
 
 
-        // Ö´ĞĞÇòĞÎÍ¶Éä¼ì²â
+        // Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¶ï¿½ï¿½ï¿½ï¿½
         RaycastHit hit;
-        // Physics.SphereCast(Æğµã, °ë¾¶, ·½Ïò, out hitInfo, ×î´ó¾àÀë, ¼ì²â²ã)
+        // Physics.SphereCast(ï¿½ï¿½ï¿½, ï¿½ë¾¶, ï¿½ï¿½ï¿½ï¿½, out hitInfo, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½)
         if (Physics.SphereCast(sensorStartPos, sensorRadius, moveDirection, out hit, detectionDistance - sensorForwardOffset, vehicleLayerMask))
         {
-            // ¼ì²âµ½ÁË¶«Î÷ (Ö»ÔÚ³µÁ¾²ã¼ì²â)
-            // È·±£²»ÊÇ¼ì²âµ½×Ô¼º (ËäÈ» SphereCast Í¨³£²»»á)
+            // ï¿½ï¿½âµ½ï¿½Ë¶ï¿½ï¿½ï¿½ (Ö»ï¿½Ú³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+            // È·ï¿½ï¿½ï¿½ï¿½ï¿½Ç¼ï¿½âµ½ï¿½Ô¼ï¿½ (ï¿½ï¿½È» SphereCast Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             if (hit.transform != transform)
             {
                 obstacleDetected = true;
-                distanceToObstacle = hit.distance; // ÕâÊÇ´ÓSensorÆğµãµ½Åö×²µãµÄ¾àÀë
+                distanceToObstacle = hit.distance; // ï¿½ï¿½ï¿½Ç´ï¿½Sensorï¿½ï¿½ãµ½ï¿½ï¿½×²ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½
 
-                // 2. ¸ù¾İ¾àÀëµ÷ÕûÄ¿±êËÙ¶È
+                // 2. ï¿½ï¿½ï¿½İ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½
                 if (distanceToObstacle < safeDistance)
                 {
-                    // ¾àÀëÌ«½ü£¬ĞèÒª¼õËÙ
-                    // ³¢ÊÔÆ¥ÅäÇ°³µËÙ¶È (Èç¹ûÄÜ»ñÈ¡µ½)
+                    // ï¿½ï¿½ï¿½ï¿½Ì«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
+                    // ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ù¶ï¿½ (ï¿½ï¿½ï¿½ï¿½Ü»ï¿½È¡ï¿½ï¿½)
                     VehicleMovement carAhead = hit.collider.GetComponent<VehicleMovement>();
                     if (carAhead != null)
                     {
-                        // Ä¿±êËÙ¶ÈÊÇÇ°³µµÄµ±Ç°ËÙ¶È£¬µ«²»ÄÜµÍÓÚ×Ô¼ºµÄ×îµÍËÙ¶È
-                        targetSpeed = Mathf.Max(minSpeed, carAhead.currentSpeed - 1.0f); // ÉÔÎ¢ÂıÒ»µãµãÒÔ±£³Ö¾àÀë
+                        // Ä¿ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Äµï¿½Ç°ï¿½Ù¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
+                        targetSpeed = Mathf.Max(minSpeed, carAhead.currentSpeed - 1.0f); // ï¿½ï¿½Î¢ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½
                     }
                     else
                     {
-                        // Èç¹û»ñÈ¡²»µ½Ç°³µ½Å±¾£¬»òÕßÖ»ÊÇÏë¼òµ¥´¦Àí£¬¾Í´ó·ù¼õËÙ
-                        // ¿ÉÒÔ¸ù¾İ¾àÀë±ÈÀıÀ´¼õËÙ£¬¾àÀëÔ½½üËÙ¶ÈÔ½µÍ
-                        float speedRatio = Mathf.Clamp01(distanceToObstacle / safeDistance); // 0=½Ó´¥, 1=¸ÕºÃÔÚ°²È«¾àÀë
-                        targetSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedRatio * speedRatio); // Ê¹ÓÃÆ½·½ÈÃ¼õËÙ¸üÃ÷ÏÔ
-                        // »òÕßÖ±½ÓÉèÎª×îµÍËÙ¶È
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½òµ¥´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                        // ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½İ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù£ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½Ù¶ï¿½Ô½ï¿½ï¿½
+                        float speedRatio = Mathf.Clamp01(distanceToObstacle / safeDistance); // 0=ï¿½Ó´ï¿½, 1=ï¿½Õºï¿½ï¿½Ú°ï¿½È«ï¿½ï¿½ï¿½ï¿½
+                        targetSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedRatio * speedRatio); // Ê¹ï¿½ï¿½Æ½ï¿½ï¿½ï¿½Ã¼ï¿½ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½
+                        // ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
                         // targetSpeed = minSpeed;
                     }
                 }
-                // else: ÔÚ°²È«¾àÀëÖ®Íâ£¬µ«ÔÚ¼ì²â·¶Î§ÄÚ£¬¿ÉÒÔ°´×î´óËÙ¶ÈĞĞÊ» (Ä¬ÈÏtargetSpeed=maxSpeed)
+                // else: ï¿½Ú°ï¿½È«ï¿½ï¿½ï¿½ï¿½Ö®ï¿½â£¬ï¿½ï¿½ï¿½Ú¼ï¿½â·¶Î§ï¿½Ú£ï¿½ï¿½ï¿½ï¿½Ô°ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½Ê» (Ä¬ï¿½ï¿½targetSpeed=maxSpeed)
             }
         }
-        // else: Ç°·½¼ì²â·¶Î§ÄÚÎŞÕÏ°­£¬±£³ÖÄ¿±êÎª×î´óËÙ¶È
+        // else: Ç°ï¿½ï¿½ï¿½ï¿½â·¶Î§ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 
-        // 3. Æ½»¬µ÷Õûµ±Ç°ËÙ¶È
+        // 3. Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½Ù¶ï¿½
         float accel = (targetSpeed > currentSpeed) ? acceleration : deceleration;
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, accel * Time.deltaTime);
-        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed); // È·±£ËÙ¶ÈÔÚÔÊĞí·¶Î§ÄÚ
+        currentSpeed = Mathf.Clamp(currentSpeed, minSpeed, maxSpeed); // È·ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½
 
-        // 4. Ó¦ÓÃÒÆ¶¯
+        // 4. Ó¦ï¿½ï¿½ï¿½Æ¶ï¿½
         transform.Translate(moveDirection * currentSpeed * Time.deltaTime, Space.World);
 
-        // 5. ¼ì²éÏú»Ù±ß½ç
+        // 5. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ß½ï¿½
         CheckDestroyBoundary();
 
-        // (¿ÉÑ¡) µ÷ÊÔ»æÖÆ¼ì²âÉäÏß
+        // (ï¿½ï¿½Ñ¡) ï¿½ï¿½ï¿½Ô»ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Debug.DrawRay(sensorStartPos, moveDirection * (obstacleDetected ? distanceToObstacle : detectionDistance - sensorForwardOffset), obstacleDetected ? Color.red : Color.green);
     }
 
@@ -106,7 +107,7 @@ public class VehicleMovement : MonoBehaviour
         }
     }
 
-    // ³õÊ¼»¯·½·¨ĞèÒª½ÓÊÕ¸ü¶à²ÎÊı
+    // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½Õ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void Initialize(Vector3 direction, float vehicleMaxSpeed, float vehicleMinSpeed, float accel, float decel, float detectDist, float safeDist, LayerMask layerMask, float destroyX, float sensorHOffset, float sensorFOffset, float sensRadius)
     {
         moveDirection = direction.normalized;
@@ -122,9 +123,23 @@ public class VehicleMovement : MonoBehaviour
         sensorForwardOffset = sensorFOffset;
         sensorRadius = sensRadius;
 
-        // ÔÙ´ÎÉèÖÃ movingRight È·±£ÕıÈ·
+        // ï¿½Ù´ï¿½ï¿½ï¿½ï¿½ï¿½ movingRight È·ï¿½ï¿½ï¿½ï¿½È·
         movingRight = moveDirection.x > 0;
-        // ¿ÉÒÔÔÚÕâÀïÉèÖÃÒ»¸öËæ»úµÄ³õÊ¼ËÙ¶È£¿
-        currentSpeed = Random.Range(minSpeed, (minSpeed + maxSpeed) / 2f); // ÀıÈç£¬³õÊ¼ËÙ¶ÈÔÚ×îµÍºÍÆ½¾ùÖ®¼ä
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½Ê¼ï¿½Ù¶È£ï¿½
+        currentSpeed = Random.Range(minSpeed, (minSpeed + maxSpeed) / 2f); // ï¿½ï¿½ï¿½ç£¬ï¿½ï¿½Ê¼ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½Æ½ï¿½ï¿½Ö®ï¿½ï¿½
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("è§¦å‘å™¨æ¥è§¦å¯¹è±¡: " + other.name);
+        
+        if (other.CompareTag("Player"))
+        {
+            CatHealth health = other.GetComponent<CatHealth>();
+            if (health != null)
+            {
+                health.AddHealth(-10f);
+                Debug.Log("é€šè¿‡è§¦å‘å™¨æ‰£é™¤ç”Ÿå‘½å€¼");
+            }
+        }
     }
 }

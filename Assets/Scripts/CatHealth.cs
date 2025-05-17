@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using StarterAssets;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class CatHealth : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class CatHealth : MonoBehaviour
     public Slider staminaBar;
     public Image fillImage;
     public TMP_Text staminaText;
+    public GameObject endGameCanvas;
+    public float delayBeforeLoad = 5f; // 延迟加载时间（秒）
 
     // 新增机制相关字段
     [Header("Health Decay Settings")]
@@ -64,6 +67,56 @@ public class CatHealth : MonoBehaviour
 
         // 检查低健康状态
         CheckLowHealthEffects();
+
+        // 新增：检查健康值
+        if(currentHealth <= 0)
+        {
+            GameOver();
+        }
+    }
+    void GameOver()
+    {
+        // 暂停游戏时间
+        Time.timeScale = 0f;
+        
+        // 显示鼠标光标
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        
+        // 激活游戏失败UI
+
+        // 显示结束游戏UI
+        if (endGameCanvas != null)
+        {
+            endGameCanvas.SetActive(true);
+        }
+
+        // 禁用玩家控制
+        if(fpsController != null)
+        {
+            fpsController.enabled = false;
+        }
+        
+        Debug.Log("游戏结束，生命值归零");
+        // 启动延迟加载协程
+        StartCoroutine(DelayedSceneLoad());
+    }
+
+    IEnumerator DelayedSceneLoad()
+    {
+        // 等待指定时间（使用unscaledDeltaTime因为Time.timeScale可能是0）
+        float elapsed = 0f;
+        while (elapsed < delayBeforeLoad)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // 恢复时间缩放（如果需要）
+        Time.timeScale = 1f;
+        
+        // 加载结束菜单场景
+        SceneManager.LoadScene("exit_menu");
     }
 
     // 原有方法保持不变
